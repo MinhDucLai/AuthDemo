@@ -17,6 +17,10 @@ spring:
     database: postgresql
   application:
     name: Test
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
 
 application:
   security:
@@ -25,3 +29,4 @@ application:
       expiration: 86400000 # a day
       refresh-token:
         expiration: 604800000 # 7 days
+

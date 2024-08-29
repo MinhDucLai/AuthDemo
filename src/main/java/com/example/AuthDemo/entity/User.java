@@ -1,10 +1,12 @@
 package com.example.AuthDemo.entity;
 
+import com.example.AuthDemo.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +30,20 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    List<UserOrder> userOrders;
+
+    public User(long userId) {
+        this.id = userId;
+    }
+
+    public UserDTO getVO() {
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(this, userDTO);
+        return userDTO;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -64,4 +80,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }

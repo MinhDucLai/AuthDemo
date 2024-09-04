@@ -18,6 +18,10 @@ public class ProductService {
 
 
     public Product create(ProductRequest request) {
+
+        if (request.getImage() == null ) {
+            throw new IllegalArgumentException("Image is required");
+        }
         String path =  UploadImages(request.getImage());
 
         Product product = Product

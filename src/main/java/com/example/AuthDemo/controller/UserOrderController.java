@@ -30,8 +30,19 @@ public class UserOrderController {
         );
     }
 
+    @GetMapping("/user")
+    @PreAuthorize("hasAnyAuthority('ADMIN' ,'USER')")
+    public GlobalResponse getListOrderByUser(@RequestBody FilterRequest request) {
+
+        List<UserOrderDTO> userOrders = userOrderService.getListOrderbyUser(request);
+
+        return new GlobalResponse(
+                200,"success",userOrders
+        );
+    }
+
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN' ,'USER')")
     public GlobalResponse getAll(@RequestBody FilterRequest request) {
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         List<UserOrderDTO> userOrders = userOrderService.getAll(pageable);

@@ -1,6 +1,7 @@
 package com.example.AuthDemo.config;
 
 import com.example.AuthDemo.entity.Token;
+import com.example.AuthDemo.exception.UserForbiddenException;
 import com.example.AuthDemo.repository.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -4,8 +4,11 @@ import com.example.AuthDemo.dto.UserOrderDTO;
 import com.example.AuthDemo.entity.Product;
 import com.example.AuthDemo.entity.User;
 import com.example.AuthDemo.entity.UserOrder;
+import com.example.AuthDemo.exception.UserNotFoundException;
 import com.example.AuthDemo.repository.ProductRepository;
 import com.example.AuthDemo.repository.UserOrderRepository;
+import com.example.AuthDemo.repository.UserRepository;
+import com.example.AuthDemo.request.FilterRequest;
 import com.example.AuthDemo.request.UserOrderRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ import java.util.List;
 public class UserOrderService {
     @Autowired
     private UserOrderRepository userOrderRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -58,5 +64,15 @@ public class UserOrderService {
             userOrderList.add(userOrder.getVO());
         }
         return userOrderList;
+    }
+
+    public List<UserOrderDTO> getListOrderbyUser(FilterRequest request)  {
+
+        List<UserOrder> userOrders = userOrderRepository.getOrderByUserName(request.getName());
+        List<UserOrderDTO> userOrderList = new ArrayList<>();
+        for (UserOrder userOrder : userOrders) {
+            userOrderList.add(userOrder.getVO());
+        }
+        return  userOrderList;
     }
 }

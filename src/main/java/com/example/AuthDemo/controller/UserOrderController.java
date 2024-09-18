@@ -2,6 +2,7 @@ package com.example.AuthDemo.controller;
 
 import com.example.AuthDemo.dto.UserOrderDTO;
 import com.example.AuthDemo.entity.UserOrder;
+import com.example.AuthDemo.repository.UserOrderRepository;
 import com.example.AuthDemo.request.FilterRequest;
 import com.example.AuthDemo.request.UserOrderRequest;
 import com.example.AuthDemo.response.GlobalResponse;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserOrderController {
     private final UserOrderService userOrderService;
-
+    private final UserOrderRepository userOrderRepository;
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public GlobalResponse addOrder(@RequestBody UserOrderRequest request) {
@@ -30,7 +31,7 @@ public class UserOrderController {
         );
     }
 
-    @GetMapping("/user")
+    @PostMapping ("/user")
     @PreAuthorize("hasAnyAuthority('ADMIN' ,'USER')")
     public GlobalResponse getListOrderByUser(@RequestBody FilterRequest request) {
 
@@ -50,6 +51,15 @@ public class UserOrderController {
 
         return new GlobalResponse(
                 200,"success",userOrders
+        );
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN' ,'USER')")
+    public GlobalResponse deleteOrder(@PathVariable Long id) {
+            userOrderRepository.deleteById(id);
+        return new GlobalResponse(
+                200,"success",null
         );
     }
 }
